@@ -1,5 +1,5 @@
 import React from 'react';
-import taskaroologo from './taskaroologo.png';
+import taskaroologo from './assets/taskaroologo.png';
 
 function Navbar({ setPage, handleLogout, currentPage }) {
   return (
