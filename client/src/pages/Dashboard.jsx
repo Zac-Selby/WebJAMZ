@@ -9,6 +9,11 @@ export default function Dashboard() {
                 <div className="habit-box">Habit Streak B: <strong>x</strong> days</div>
                 <div className="habit-box">Habit Streak C: <strong>x</strong> days</div>
             </div>
+
+            <div className="action-buttons">
+                <button className="add-task">Add Task</button>
+                <button className="add-habit">Add Habit</button>
+            </div>
         </div>
   );
 }
