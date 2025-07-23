@@ -45,7 +45,7 @@ function App() {
 
       {/* Show Login Page */}
       {page === 'login' && (
-        <Login switchToSignup={() => setPage('signup')} onLogin={handleLogin} />
+        <Login switchToSignup={() => setPage('signup')} onLogin={handleLogin} /> 
       )}
 
       {/* Show Signup Page */}
