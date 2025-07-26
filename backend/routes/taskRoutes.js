@@ -4,7 +4,8 @@ const {
   getTasks,
   createTask,
   updateTask,
-  deleteTask
+  deleteTask,
+  completeTask
 } = require('../controller/taskController');
 
 const { protect } = require('../middleware/authMiddleware');
@@ -17,5 +18,8 @@ router.route('/')
 router.route('/:id')
   .put(protect, updateTask)
   .delete(protect, deleteTask);
+
+// Complete task route
+router.post('/:id/complete', protect, completeTask);
 
 module.exports = router;

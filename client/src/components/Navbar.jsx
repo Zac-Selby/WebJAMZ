@@ -1,28 +1,49 @@
-import { Link, Outlet } from 'react-router-dom';
+import React from 'react';
 import webjamzLogo from '../assets/WebJAMZ Logo.png';
 import taskarooLogo from '../assets/Taskaroo Logo.png';
 
-export default function Layout() {
+function Navbar({ setPage, handleLogout, currentPage, user }) {
   return (
-    <>
-        <nav class="navbar">
-            <a href="#" class="logo-navbar">
-                <img src={taskarooLogo} alt="Taskaroo" width={100} />
-            </a>
-            
-            <div class="navbar-links">
-                <a href="/dashboard" class="active">Dashboard</a>
-                <a href="/tasks">Tasks</a>
-                <a href="/habits">Habits</a>
-                <a href="/logout">Logout</a>
-            </div>
-        </nav>
-
-        {/*<header class="hero">
-            <img src={taskarooLogo} alt="Taskaroo" width={140} />
-            <p>Your personal task & habit tracker to boost your productivity.</p>
-            <button class="primary">Get Started</button>
-        </header>*/}
-    </>
-  )
+    <nav className="navbar">
+      <a 
+        href="#" 
+        onClick={(e) => { e.preventDefault(); setPage('dashboard'); }}
+        className="logo-navbar"
+      >
+        <img src={taskarooLogo} alt="Taskaroo" width={100} />
+      </a>
+      
+      <div className="navbar-links">
+        <a 
+          href="#" 
+          onClick={(e) => { e.preventDefault(); setPage('dashboard'); }}
+          className={currentPage === 'dashboard' ? 'active' : ''}
+        >
+          Dashboard
+        </a>
+        <a 
+          href="#" 
+          onClick={(e) => { e.preventDefault(); setPage('tasks'); }}
+          className={currentPage === 'tasks' ? 'active' : ''}
+        >
+          Tasks
+        </a>
+        <a 
+          href="#" 
+          onClick={(e) => { e.preventDefault(); setPage('habits'); }}
+          className={currentPage === 'habits' ? 'active' : ''}
+        >
+          Habits
+        </a>
+        <a 
+          href="#" 
+          onClick={(e) => { e.preventDefault(); handleLogout(); }}
+        >
+          Logout
+        </a>
+      </div>
+    </nav>
+  );
 }
+
+export default Navbar;

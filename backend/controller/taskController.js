@@ -14,14 +14,19 @@ const createTask = async (req, res) => {
     return res.status(400).json({ message: 'Task title is required' });
   }
 
-  const task = await Task.create({
-    user: req.user._id,
-    title,
-    dueDate,
-    priority
-  });
+  try {
+    const task = await Task.create({
+      user: req.user._id,
+      title,
+      dueDate,
+      priority
+    });
 
-  res.status(201).json(task);
+    res.status(201).json(task);
+  } catch (error) {
+    console.error('Error creating task:', error);
+    res.status(500).json({ message: 'Server error creating task' });
+  }
 };
 
 // @desc    Update a task
@@ -48,8 +53,29 @@ const deleteTask = async (req, res) => {
   res.json({ message: 'Task removed' });
 };
 
+// @desc    Mark a task as complete
+const completeTask = async (req, res) => {
+  const task = await Task.findById(req.params.id);
 
-module.exports = { getTasks, createTask, updateTask, deleteTask };
+  if (!task || task.user.toString() !== req.user._id.toString()) {
+    return res.status(404).json({ message: 'Task not found or unauthorized' });
+  }
+
+  if (task.isComplete) {
+    return res.status(400).json({ message: 'Task is already completed' });
+  }
+
+  const updated = await Task.findByIdAndUpdate(
+    req.params.id, 
+    { isComplete: true }, 
+    { new: true }
+  );
+  
+  res.json(updated);
+};
+
+
+module.exports = { getTasks, createTask, updateTask, deleteTask, completeTask };
 // This code defines a task controller for managing tasks in a Node.js application using Express and Mongoose.
 // It includes functions to get all tasks for the logged-in user, create a new task, update an existing task, and delete a task.
 // Each function interacts with the Task model to perform database operations and returns appropriate responses.

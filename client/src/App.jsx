@@ -1,4 +1,4 @@
-import { useState } from 'react'
+import { useState, useEffect } from 'react'
 import reactLogo from './assets/react.svg'
 import viteLogo from '/vite.svg'
 import './App.css'
@@ -17,21 +17,41 @@ function App() {
   // Track current page/view
   const [page, setPage] = useState('login'); // 'login', 'signup', 'dashboard', 'tasks', 'habits'
   const [isAuthenticated, setIsAuthenticated] = useState(false); // simple auth flag
+  const [user, setUser] = useState(null); // store user data
 
-  // Function to handle login (simulate login)
+  // Check for existing authentication on app load
+  useEffect(() => {
+    const token = localStorage.getItem('token');
+    const userData = localStorage.getItem('user');
+    
+    if (token && userData) {
+      setIsAuthenticated(true);
+      setUser(JSON.parse(userData));
+      setPage('dashboard');
+    }
+  }, []);
+
+  // Function to handle login
   const handleLogin = () => {
+    const userData = localStorage.getItem('user');
+    if (userData) {
+      setUser(JSON.parse(userData));
+    }
     setIsAuthenticated(true);
     setPage('dashboard');
   };
 
-  // Function to handle sign up (simulate signup)
+  // Function to handle sign up - redirect to login for now
   const handleSignup = () => {
-    setIsAuthenticated(true);
-    setPage('dashboard');
+    // After successful signup, they should login
+    setPage('login');
   };
 
   // Logout function
   const handleLogout = () => {
+    localStorage.removeItem('token');
+    localStorage.removeItem('user');
+    setUser(null);
     setIsAuthenticated(false);
     setPage('login');
   };
@@ -40,7 +60,7 @@ function App() {
     <div>
       {/* Always show Navbar */}
       {isAuthenticated && (
-        <Navbar setPage={setPage} handleLogout={handleLogout} currentPage={page} />
+        <Navbar setPage={setPage} handleLogout={handleLogout} currentPage={page} user={user} />
       )}
 
       {/* Show Login Page */}
@@ -55,17 +75,17 @@ function App() {
 
       {/* Show Dashboard */}
       {isAuthenticated && page === 'dashboard' && (
-        <Dashboard setPage={setPage} />
+        <Dashboard setPage={setPage} user={user} />
       )}
 
       {/* Show Task Page */}
       {isAuthenticated && page === 'tasks' && (
-        <TaskPage />
+        <TaskPage user={user} />
       )}
 
       {/* Show Habit Page */}
       {isAuthenticated && page === 'habits' && (
-        <HabitPage />
+        <HabitPage user={user} />
       )}
     </div>
   );
