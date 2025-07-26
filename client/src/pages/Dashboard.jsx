@@ -1,19 +1,21 @@
-export default function Dashboard() {
-    return (
-        <div className="dashboard-container">
-            <h1>Dashboard View</h1>
-            <p className="subheading">You’ve completed <strong>x/y</strong> tasks today.</p>
+import React from 'react';
 
-            <div className="habit-streaks">
-                <div className="habit-box">Habit Streak A: <strong>x</strong> days</div>
-                <div className="habit-box">Habit Streak B: <strong>x</strong> days</div>
-                <div className="habit-box">Habit Streak C: <strong>x</strong> days</div>
-            </div>
-
-            <div className="action-buttons">
-                <button className="add-task">Add Task</button>
-                <button className="add-habit">Add Habit</button>
-            </div>
-        </div>
+function Dashboard({ setPage }) {
+  return (
+    <div className="page-box">
+      <h1 className="page-title">Dashboard</h1>
+      <div className="section-box">
+        <h3>You've completed ____ tasks today</h3>
+      </div>
+      <div className="section-box">
+        <h3>Habit Streak: X Days</h3>
+      </div>
+      <div className="button-group">
+        <button className="primary" onClick={() => setPage('tasks')}>Add Task</button>
+        <button className="primary" onClick={() => setPage('habits')}>Add Habit</button>
+      </div>
+    </div>
   );
 }
+
+export default Dashboard;

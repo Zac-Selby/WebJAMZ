@@ -1,19 +1,75 @@
-import './App.css';
-import { Routes, Route } from 'react-router-dom';
-import Layout from './components/Layout.jsx';
-import Home from './pages/Home.jsx';
-import Dashboard from './pages/Dashboard.jsx';
+import { useState } from 'react'
+import reactLogo from './assets/react.svg'
+import viteLogo from '/vite.svg'
+import './App.css'
 
+import Navbar from './components/Navbar';        
+import Login from './pages/Login.jsx';            
+import Signup from './pages/Signup.jsx';           
+import Dashboard from './pages/Dashboard';     
+import TaskPage from './pages/TaskPage';       
+import HabitPage from './pages/HabitPage';     
+
+import webjamzlogo from './assets/WebJAMZ Logo.png'; 
+import taskaroologo from './assets/Taskaroo Logo.png'; 
 
 function App() {
+  // Track current page/view
+  const [page, setPage] = useState('login'); // 'login', 'signup', 'dashboard', 'tasks', 'habits'
+  const [isAuthenticated, setIsAuthenticated] = useState(false); // simple auth flag
+
+  // Function to handle login (simulate login)
+  const handleLogin = () => {
+    setIsAuthenticated(true);
+    setPage('dashboard');
+  };
+
+  // Function to handle sign up (simulate signup)
+  const handleSignup = () => {
+    setIsAuthenticated(true);
+    setPage('dashboard');
+  };
+
+  // Logout function
+  const handleLogout = () => {
+    setIsAuthenticated(false);
+    setPage('login');
+  };
+
   return (
-    <>
-      <Routes>
-        <Route path="/" element={<><Layout /> <Home /></>} />
-        <Route path="/dashboard" element={<><Layout /> <Dashboard /></>} />
-      </Routes>
-    </>
-  )
+    <div>
+      {/* Always show Navbar */}
+      {isAuthenticated && (
+        <Navbar setPage={setPage} handleLogout={handleLogout} currentPage={page} />
+      )}
+
+      {/* Show Login Page */}
+      {page === 'login' && (
+        <Login switchToSignup={() => setPage('signup')} onLogin={handleLogin} /> 
+      )}
+
+      {/* Show Signup Page */}
+      {page === 'signup' && (
+        <Signup switchToLogin={() => setPage('login')} onSignup={handleSignup} />
+      )}
+
+      {/* Show Dashboard */}
+      {isAuthenticated && page === 'dashboard' && (
+        <Dashboard setPage={setPage} />
+      )}
+
+      {/* Show Task Page */}
+      {isAuthenticated && page === 'tasks' && (
+        <TaskPage />
+      )}
+
+      {/* Show Habit Page */}
+      {isAuthenticated && page === 'habits' && (
+        <HabitPage />
+      )}
+    </div>
+  );
 }
+
 
 export default App

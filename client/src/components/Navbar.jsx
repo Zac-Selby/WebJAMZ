@@ -6,7 +6,7 @@ export default function Layout() {
   return (
     <>
         <nav class="navbar">
-            <a href="#" class="navbar-logo">
+            <a href="#" class="logo-navbar">
                 <img src={taskarooLogo} alt="Taskaroo" width={100} />
             </a>
             
