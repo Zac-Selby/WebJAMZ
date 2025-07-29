@@ -11,6 +11,12 @@ const userRoutes = require('./routes/userRoutes');
 const taskRoutes = require('./routes/taskRoutes');
 const habitRoutes = require('./routes/habitRoutes');
 
+const express = require('express');
+const mongoose = require('mongoose');
+
+const app = express();
+const PORT = 3000;
+
 
 // Middleware
 app.use(cors());
@@ -34,3 +40,18 @@ mongoose.connect(process.env.MONGO_URI)
     });
   })
   .catch(err => console.error(err));
+
+  mongoose.connect(process.env.MONGO_URI)
+    .then(() => console.log('✅ MongoDB connected'))
+    .catch(err => console.error('❌ MongoDB connection error:', err));
+  
+  app.use(express.json());
+  
+  app.get('/', (req, res) => {
+    res.send('Task Manager API is running!');
+  });
+  
+  app.listen(PORT, () => {
+    console.log(`🚀 Server running at http://localhost:${PORT}`);
+  });
+  
