@@ -15,6 +15,8 @@ const habitRoutes = require('./routes/habitRoutes');
 const PORT = 3000;
 
 
+
+
 // Middleware
 app.use(cors());
 app.use(express.json()); 
@@ -38,3 +40,4 @@ app.get('/', (req, res) => {
     });
   })
   .catch(err => console.error('❌ MongoDB connection error:', err));
+
