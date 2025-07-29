@@ -1,3 +1,4 @@
+//streak.js
 const mongoose = require('mongoose');
 
 const streakSchema = new mongoose.Schema({

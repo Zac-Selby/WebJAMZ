@@ -1,3 +1,4 @@
+//taskController.js
 const Task = require('../models/Task');
 
 // @desc    Get all tasks for logged-in user
@@ -76,6 +77,3 @@ const completeTask = async (req, res) => {
 
 
 module.exports = { getTasks, createTask, updateTask, deleteTask, completeTask };
-// This code defines a task controller for managing tasks in a Node.js application using Express and Mongoose.
-// It includes functions to get all tasks for the logged-in user, create a new task, update an existing task, and delete a task.
-// Each function interacts with the Task model to perform database operations and returns appropriate responses.

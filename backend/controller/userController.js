@@ -1,3 +1,4 @@
+// userController.js
 const User = require('../models/User');
 const bcrypt = require('bcryptjs');
 const jwt = require('jsonwebtoken');
@@ -51,5 +52,3 @@ const generateToken = (id) => {
 };
 
 module.exports = { registerUser, loginUser };
-// This code defines a user controller for handling user registration and login in a Node.js application using Express and Mongoose.
-// It includes functions to register a new user, login an existing user, and generate a JWT token for authenticated sessions.

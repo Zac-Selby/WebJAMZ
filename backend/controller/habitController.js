@@ -1,3 +1,4 @@
+// habitController.js
 const Habit = require('../models/Habit');
 
 // Get all habits

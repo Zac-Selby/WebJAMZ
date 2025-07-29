@@ -1,3 +1,4 @@
+//progressLog.js
 const mongoose = require('mongoose');
 
 const progressLogSchema = new mongoose.Schema({

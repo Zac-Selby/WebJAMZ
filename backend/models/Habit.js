@@ -1,3 +1,4 @@
+//habit.js
 const mongoose = require('mongoose');
 
 const habitSchema = new mongoose.Schema({
@@ -5,6 +6,7 @@ const habitSchema = new mongoose.Schema({
   name: String,
   frequency: String, // e.g., 'daily', 'weekly'
   progress: [Date], // dates when habit was completed
+  
   createdAt: { type: Date, default: Date.now }
 });
 
