@@ -7,7 +7,7 @@ const registerUser = async (req, res) => {
   console.log('registerUser called');
   console.log('Request body:', req.body);
 
-  const { name, email, password } = req.body;
+  const { username, email, password } = req.body;
 
   // Verify JWT_SECRET
   if (!process.env.JWT_SECRET) {
@@ -22,7 +22,7 @@ const registerUser = async (req, res) => {
     const salt = await bcrypt.genSalt(10);
     const hashedPassword = await bcrypt.hash(password, salt);
 
-    const newUser = await User.create({ name, email, password: hashedPassword });
+    const newUser = await User.create({ username, email, password: hashedPassword });
     res.status(201).json({
       _id: newUser._id,
       name: newUser.name,
