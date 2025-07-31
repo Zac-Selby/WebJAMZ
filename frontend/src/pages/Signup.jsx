@@ -6,7 +6,7 @@ const API_BASE_URL = 'https://webjamz-backend.onrender.com/api';
 
 function Signup({ switchToLogin }) {
   const [formData, setFormData] = useState({
-    name: '',
+    username: '',
     email: '',
     password: '',
     confirmPassword: ''
@@ -17,7 +17,7 @@ function Signup({ switchToLogin }) {
   const handleChange = (e) => {
     setFormData({
       ...formData,
-      [e.target.name]: e.target.value
+      [e.target.username]: e.target.value
     });
   };
 
@@ -40,7 +40,7 @@ function Signup({ switchToLogin }) {
           'Content-Type': 'application/json',
         },
         body: JSON.stringify({
-          name: formData.name,
+          username: formData.username,
           email: formData.email,
           password: formData.password
         })
@@ -53,7 +53,7 @@ function Signup({ switchToLogin }) {
         localStorage.setItem('token', data.token);
         localStorage.setItem('user', JSON.stringify({
           id: data._id,
-          name: data.name,
+          username: data.username,
           email: data.email
         }));
         
@@ -87,7 +87,7 @@ function Signup({ switchToLogin }) {
           <label htmlFor="signupName">Name</label>
           <input 
             id="signupName" 
-            name="name"
+            name="username"
             type="text" 
             placeholder="Full Name" 
             value={formData.name}
