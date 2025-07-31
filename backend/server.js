@@ -12,7 +12,7 @@ const taskRoutes = require('./routes/taskRoutes');
 const habitRoutes = require('./routes/habitRoutes');
 
 
-const PORT = 5000;
+const PORT = process.env.PORT || 5000;
 
 
 
