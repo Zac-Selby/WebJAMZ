@@ -2,12 +2,13 @@
 const mongoose = require('mongoose');
 
 const habitSchema = new mongoose.Schema({
-  userId: { type: mongoose.Schema.Types.ObjectId, ref: 'User' },
-  name: String,
-  frequency: String, // e.g., 'daily', 'weekly'
-  progress: [Date], // dates when habit was completed
-  
-  createdAt: { type: Date, default: Date.now }
+  user: { type: mongoose.Schema.Types.ObjectId, ref: 'User', required: true },
+  name: { type: String, required: true },
+  frequency: { type: String, default: 'daily' }, // e.g., 'daily', 'weekly'
+  completions: [Date], // dates when habit was completed
+  streak: { type: Number, default: 0 }, // current streak
+  createdAt: { type: Date, default: Date.now },
+  updatedAt: { type: Date, default: Date.now }
 });
 
 module.exports = mongoose.model('Habit', habitSchema);
