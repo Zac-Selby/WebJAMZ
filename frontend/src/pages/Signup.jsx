@@ -2,7 +2,7 @@ import React, { useState } from 'react';
 import taskaroologo from '../assets/Taskaroo Logo.png';
 import webjamzlogo from '../assets/WebJAMZ Logo.png'; 
 
-const API_BASE_URL = 'http://localhost:5000/api';
+const API_BASE_URL = 'https://webjamz-backend.onrender.com/api';
 
 function Signup({ switchToLogin }) {
   const [formData, setFormData] = useState({
