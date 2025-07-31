@@ -3,47 +3,74 @@ const Habit = require('../models/Habit');
 
 // Get all habits
 const getHabits = async (req, res) => {
-  const habits = await Habit.find({ user: req.user._id });
-  res.json(habits);
+  try {
+    const habits = await Habit.find({ user: req.user._id });
+    res.json(habits);
+  } catch (error) {
+    console.error('Error getting habits:', error);
+    res.status(500).json({ message: 'Server error getting habits' });
+  }
 };
 
 // Create a habit
 const createHabit = async (req, res) => {
-  const { name, frequency } = req.body;
+  try {
+    const { name, frequency } = req.body;
 
-  if (!name) return res.status(400).json({ message: 'Habit name is required' });
+    if (!name) return res.status(400).json({ message: 'Habit name is required' });
 
-  const habit = await Habit.create({
-    user: req.user._id,
-    name,
-    frequency
-  });
+    const habit = await Habit.create({
+      user: req.user._id,
+      name,
+      frequency: frequency || 'daily'
+    });
 
-  res.status(201).json(habit);
+    res.status(201).json(habit);
+  } catch (error) {
+    console.error('Error creating habit:', error);
+    res.status(500).json({ message: 'Server error creating habit' });
+  }
 };
 
 // Update a habit
 const updateHabit = async (req, res) => {
-  const habit = await Habit.findById(req.params.id);
+  try {
+    const habit = await Habit.findById(req.params.id);
 
-  if (!habit || habit.user.toString() !== req.user._id.toString()) {
-    return res.status(404).json({ message: 'Habit not found or unauthorized' });
+    if (!habit || habit.user.toString() !== req.user._id.toString()) {
+      return res.status(404).json({ message: 'Habit not found or unauthorized' });
+    }
+
+    const updated = await Habit.findByIdAndUpdate(
+      req.params.id, 
+      { 
+        ...req.body,
+        updatedAt: new Date()
+      }, 
+      { new: true }
+    );
+    res.json(updated);
+  } catch (error) {
+    console.error('Error updating habit:', error);
+    res.status(500).json({ message: 'Server error updating habit' });
   }
-
-  const updated = await Habit.findByIdAndUpdate(req.params.id, req.body, { new: true });
-  res.json(updated);
 };
 
 // Delete a habit
 const deleteHabit = async (req, res) => {
-  const habit = await Habit.findById(req.params.id);
+  try {
+    const habit = await Habit.findById(req.params.id);
 
-  if (!habit || habit.user.toString() !== req.user._id.toString()) {
-    return res.status(404).json({ message: 'Habit not found or unauthorized' });
+    if (!habit || habit.user.toString() !== req.user._id.toString()) {
+      return res.status(404).json({ message: 'Habit not found or unauthorized' });
+    }
+
+    await Habit.findByIdAndDelete(req.params.id);
+    res.json({ message: 'Habit removed' });
+  } catch (error) {
+    console.error('Error deleting habit:', error);
+    res.status(500).json({ message: 'Server error deleting habit' });
   }
-
-  await Habit.findByIdAndDelete(req.params.id);
-  res.json({ message: 'Habit removed' });
 };
 
 
