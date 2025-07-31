@@ -1,5 +1,5 @@
 // API utility functions for making authenticated requests
-const API_BASE_URL = 'http://localhost:5000/api';
+const API_BASE_URL = 'https://webjamz-backend.onrender.com/api';
 
 // Helper function to get auth headers
 const getAuthHeaders = () => {
@@ -18,7 +18,11 @@ export const taskAPI = {
       method: 'GET',
       headers: getAuthHeaders()
     });
-    return response.json();
+    const data = await response.json();
+    if (!response.ok) {
+      throw new Error(data.message || `HTTP error! status: ${response.status}`);
+    }
+    return data;
   },
 
   // Create new task
@@ -28,7 +32,11 @@ export const taskAPI = {
       headers: getAuthHeaders(),
       body: JSON.stringify(taskData)
     });
-    return response.json();
+    const data = await response.json();
+    if (!response.ok) {
+      throw new Error(data.message || `HTTP error! status: ${response.status}`);
+    }
+    return data;
   },
 
   // Update task
@@ -38,7 +46,11 @@ export const taskAPI = {
       headers: getAuthHeaders(),
       body: JSON.stringify(taskData)
     });
-    return response.json();
+    const data = await response.json();
+    if (!response.ok) {
+      throw new Error(data.message || `HTTP error! status: ${response.status}`);
+    }
+    return data;
   },
 
   // Delete task
@@ -47,7 +59,11 @@ export const taskAPI = {
       method: 'DELETE',
       headers: getAuthHeaders()
     });
-    return response.json();
+    const data = await response.json();
+    if (!response.ok) {
+      throw new Error(data.message || `HTTP error! status: ${response.status}`);
+    }
+    return data;
   },
 
   // Complete task
@@ -56,7 +72,11 @@ export const taskAPI = {
       method: 'POST',
       headers: getAuthHeaders()
     });
-    return response.json();
+    const data = await response.json();
+    if (!response.ok) {
+      throw new Error(data.message || `HTTP error! status: ${response.status}`);
+    }
+    return data;
   }
 };
 
@@ -68,7 +88,11 @@ export const habitAPI = {
       method: 'GET',
       headers: getAuthHeaders()
     });
-    return response.json();
+    const data = await response.json();
+    if (!response.ok) {
+      throw new Error(data.message || `HTTP error! status: ${response.status}`);
+    }
+    return data;
   },
 
   // Create new habit
@@ -78,7 +102,11 @@ export const habitAPI = {
       headers: getAuthHeaders(),
       body: JSON.stringify(habitData)
     });
-    return response.json();
+    const data = await response.json();
+    if (!response.ok) {
+      throw new Error(data.message || `HTTP error! status: ${response.status}`);
+    }
+    return data;
   },
 
   // Update habit
@@ -88,7 +116,11 @@ export const habitAPI = {
       headers: getAuthHeaders(),
       body: JSON.stringify(habitData)
     });
-    return response.json();
+    const data = await response.json();
+    if (!response.ok) {
+      throw new Error(data.message || `HTTP error! status: ${response.status}`);
+    }
+    return data;
   },
 
   // Delete habit
@@ -97,7 +129,11 @@ export const habitAPI = {
       method: 'DELETE',
       headers: getAuthHeaders()
     });
-    return response.json();
+    const data = await response.json();
+    if (!response.ok) {
+      throw new Error(data.message || `HTTP error! status: ${response.status}`);
+    }
+    return data;
   },
 
   // Complete habit
@@ -106,6 +142,10 @@ export const habitAPI = {
       method: 'POST',
       headers: getAuthHeaders()
     });
-    return response.json();
+    const data = await response.json();
+    if (!response.ok) {
+      throw new Error(data.message || `HTTP error! status: ${response.status}`);
+    }
+    return data;
   }
 };
