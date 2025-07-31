@@ -58,23 +58,31 @@ const deleteTask = async (req, res) => {
 
 // @desc    Mark a task as complete
 const completeTask = async (req, res) => {
-  const task = await Task.findById(req.params.id);
+  try {
+    const task = await Task.findById(req.params.id);
 
-  if (!task || task.userId.toString() !== req.user._id.toString()) {
-    return res.status(404).json({ message: 'Task not found or unauthorized' });
+    if (!task || task.userId.toString() !== req.user._id.toString()) {
+      return res.status(404).json({ message: 'Task not found or unauthorized' });
+    }
+
+    if (task.isComplete) {
+      return res.status(400).json({ message: 'Task is already completed' });
+    }
+
+    const updated = await Task.findByIdAndUpdate(
+      req.params.id, 
+      { 
+        isComplete: true,
+        updatedAt: new Date()
+      }, 
+      { new: true }
+    );
+    
+    res.json(updated);
+  } catch (error) {
+    console.error('Error completing task:', error);
+    res.status(500).json({ message: 'Server error completing task' });
   }
-
-  if (task.isComplete) {
-    return res.status(400).json({ message: 'Task is already completed' });
-  }
-
-  const updated = await Task.findByIdAndUpdate(
-    req.params.id, 
-    { isComplete: true }, 
-    { new: true }
-  );
-  
-  res.json(updated);
 };
 
 
