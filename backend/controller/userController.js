@@ -7,12 +7,19 @@ const registerUser = async (req, res) => {
   console.log('registerUser called');
   console.log('Request body:', req.body);
 
-  const { username, email, password } = req.body;
+  const { name, username, email, password } = req.body;
+  // Use name if provided (from frontend), otherwise fall back to username
+  const finalUsername = name || username;
 
   // Verify JWT_SECRET
   if (!process.env.JWT_SECRET) {
     console.error('JWT_SECRET not set!');
     return res.status(500).json({ message: 'Server configuration error' });
+  }
+
+  // Validate required fields
+  if (!finalUsername || !email || !password) {
+    return res.status(400).json({ message: 'Name, email, and password are required' });
   }
 
   try {
@@ -22,10 +29,10 @@ const registerUser = async (req, res) => {
     const salt = await bcrypt.genSalt(10);
     const hashedPassword = await bcrypt.hash(password, salt);
 
-    const newUser = await User.create({ username, email, password: hashedPassword });
+    const newUser = await User.create({ username: finalUsername, email, password: hashedPassword });
     res.status(201).json({
       _id: newUser._id,
-      name: newUser.name,
+      name: newUser.username,
       email: newUser.email,
       token: generateToken(newUser._id)
     });
@@ -47,7 +54,7 @@ const loginUser = async (req, res) => {
 
     res.status(200).json({
       _id: user._id,
-      name: user.name,
+      name: user.username,
       email: user.email,
       token: generateToken(user._id)
     });
