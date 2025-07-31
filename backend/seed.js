@@ -27,7 +27,7 @@ async function seedDB() {
 
   // Create and store tasks
   const task1 = await Task.create({
-    userId: user._id,
+    user: user._id,
     title: 'Write schemas',
     description: 'Finish all MongoDB schemas',
     dueDate: new Date(),
@@ -35,7 +35,7 @@ async function seedDB() {
   });
 
   const task2 = await Task.create({
-    userId: user._id,
+    user: user._id,
     title: 'Test connection',
     description: 'Make sure server connects to MongoDB',
     dueDate: new Date(),
@@ -44,7 +44,7 @@ async function seedDB() {
 
   // Create and store habit
   const habit1 = await Habit.create({
-    userId: user._id,
+    user: user._id,
     name: 'Drink water',
     frequency: 'daily',
     progress: [new Date()]
@@ -52,7 +52,7 @@ async function seedDB() {
 
   // Create reminder
   const reminder1 = new Reminder({
-    userId: user._id,
+    user: user._id,
     type: 'task',
     referenceId: task1._id,
     message: 'Don’t forget to finish your essay!',
@@ -61,7 +61,7 @@ async function seedDB() {
 
   // Create streak
   const streak1 = new Streak({
-    userId: user._id,
+    user: user._id,
     type: 'habit',
     referenceId: habit1._id,
     currentStreak: 3,
@@ -70,7 +70,7 @@ async function seedDB() {
 
   // Create progress logs
   const progressLog1 = new ProgressLog({
-    userId: user._id,
+    user: user._id,
     type: 'task',
     referenceId: task1._id,
     date: new Date(),
@@ -78,7 +78,7 @@ async function seedDB() {
   });
 
   const progressLog2 = new ProgressLog({
-    userId: user._id,
+    user: user._id,
     type: 'habit',
     referenceId: habit1._id,
     date: new Date(Date.now() - 24 * 60 * 60 * 1000),
