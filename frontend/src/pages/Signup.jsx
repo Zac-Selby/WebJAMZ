@@ -17,7 +17,7 @@ function Signup({ switchToLogin }) {
   const handleChange = (e) => {
     setFormData({
       ...formData,
-      [e.target.username]: e.target.value
+      [e.target.name]: e.target.value
     });
   };
 
