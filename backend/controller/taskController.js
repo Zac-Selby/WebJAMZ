@@ -19,7 +19,7 @@ const createTask = async (req, res) => {
 
   try {
     const task = await Task.create({
-      userId: req.user._id,
+      user: req.user._id,
       title,
       dueDate,
       priority
