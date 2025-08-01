@@ -5,7 +5,7 @@ const Task = require('../models/Task');
 const getTasks = async (req, res) => {
   try {
     console.log('getTasks called, user:', req.user); // See if user info is available
-    const tasks = await Task.find({ userId: req.user._id });
+    const tasks = await Task.find({ user: req.user._id });
     console.log('retrieved tasks:', tasks); // Check what tasks come back
     res.json(tasks);
   } catch (error) {
@@ -24,7 +24,7 @@ const createTask = async (req, res) => {
 
   try {
     const task = await Task.create({
-      userId: req.user._id,
+      user: req.user._id,
       title,
       dueDate,
       priority
@@ -42,7 +42,7 @@ const updateTask = async (req, res) => {
   try {
     const task = await Task.findById(req.params.id);
 
-    if (!task || task.userId.toString() !== req.user._id.toString()) {
+    if (!task || task.user.toString() !== req.user._id.toString()) {
       return res.status(404).json({ message: 'Task not found or unauthorized' });
     }
 
@@ -66,7 +66,7 @@ const deleteTask = async (req, res) => {
   try {
     const task = await Task.findById(req.params.id);
 
-    if (!task || task.userId.toString() !== req.user._id.toString()) {
+    if (!task || task.user.toString() !== req.user._id.toString()) {
       return res.status(404).json({ message: 'Task not found or unauthorized' });
     }
 
@@ -83,7 +83,7 @@ const completeTask = async (req, res) => {
   try {
     const task = await Task.findById(req.params.id);
 
-    if (!task || task.userId.toString() !== req.user._id.toString()) {
+    if (!task || task.user.toString() !== req.user._id.toString()) {
       return res.status(404).json({ message: 'Task not found or unauthorized' });
     }
 
