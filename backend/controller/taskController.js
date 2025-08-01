@@ -3,10 +3,15 @@ const Task = require('../models/Task');
 
 // @desc    Get all tasks for logged-in user
 const getTasks = async (req, res) => {
-  console.log('getTasks called, user:', req.user); // See if user info is available
-  const tasks = await Task.find({ userId: req.user._id });
-  console.log('retrieved tasks:', tasks); // Check what tasks come back
-  res.json(tasks);
+  try {
+    console.log('getTasks called, user:', req.user); // See if user info is available
+    const tasks = await Task.find({ userId: req.user._id });
+    console.log('retrieved tasks:', tasks); // Check what tasks come back
+    res.json(tasks);
+  } catch (error) {
+    console.error('Error getting tasks:', error);
+    res.status(500).json({ message: 'Server error getting tasks' });
+  }
 };
 
 // @desc    Create new task
@@ -19,7 +24,7 @@ const createTask = async (req, res) => {
 
   try {
     const task = await Task.create({
-      user: req.user._id,
+      userId: req.user._id,
       title,
       dueDate,
       priority
@@ -34,26 +39,43 @@ const createTask = async (req, res) => {
 
 // @desc    Update a task
 const updateTask = async (req, res) => {
-  const task = await Task.findById(req.params.id);
+  try {
+    const task = await Task.findById(req.params.id);
 
-  if (!task || task.userId.toString() !== req.user._id.toString()) {
-    return res.status(404).json({ message: 'Task not found or unauthorized' });
+    if (!task || task.userId.toString() !== req.user._id.toString()) {
+      return res.status(404).json({ message: 'Task not found or unauthorized' });
+    }
+
+    const updated = await Task.findByIdAndUpdate(
+      req.params.id, 
+      { 
+        ...req.body,
+        updatedAt: new Date()
+      }, 
+      { new: true }
+    );
+    res.json(updated);
+  } catch (error) {
+    console.error('Error updating task:', error);
+    res.status(500).json({ message: 'Server error updating task' });
   }
-
-  const updated = await Task.findByIdAndUpdate(req.params.id, req.body, { new: true });
-  res.json(updated);
 };
 
 // @desc    Delete a task
 const deleteTask = async (req, res) => {
-  const task = await Task.findById(req.params.id);
+  try {
+    const task = await Task.findById(req.params.id);
 
-  if (!task || task.userId.toString() !== req.user._id.toString()) {
-    return res.status(404).json({ message: 'Task not found or unauthorized' });
+    if (!task || task.userId.toString() !== req.user._id.toString()) {
+      return res.status(404).json({ message: 'Task not found or unauthorized' });
+    }
+
+    await Task.findByIdAndDelete(req.params.id);
+    res.json({ message: 'Task removed' });
+  } catch (error) {
+    console.error('Error deleting task:', error);
+    res.status(500).json({ message: 'Server error deleting task' });
   }
-
-  await Task.findByIdAndDelete(req.params.id);
-  res.json({ message: 'Task removed' });
 };
 
 // @desc    Mark a task as complete
